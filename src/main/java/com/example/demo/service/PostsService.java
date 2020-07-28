@@ -27,28 +27,29 @@ public class PostsService {
     @Transactional
     public Long update(Long id, PostsUpdateRequestDto requestDto) {
         Posts posts = postsRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("ÇØ´ç »ç¿ëÀÚ°¡ ¾ø½À´Ï´Ù. id=" + id));
+                .orElseThrow(() -> new IllegalArgumentException("í•´ë‹¹ ì‚¬ìš©ìžê°€ ì—†ìŠµë‹ˆë‹¤. id=" + id));
 
         posts.update(requestDto.getTitle(), requestDto.getContent());
 
         return id;
     }
 
+    @Transactional
+    public void delete (Long id) {
+        Posts posts = postsRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("í•´ë‹¹ ì‚¬ìš©ìžê°€ ì—†ìŠµë‹ˆë‹¤. id=" + id));
+
+        postsRepository.delete(posts);
+    }
+
+    @Transactional(readOnly = true)
     public PostsResponseDto findById(Long id) {
         Posts entity = postsRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("ÇØ´ç »ç¿ëÀÚ°¡ ¾ø½À´Ï´Ù. id=" + id));
+                .orElseThrow(() -> new IllegalArgumentException("í•´ë‹¹ ì‚¬ìš©ìžê°€ ì—†ìŠµë‹ˆë‹¤. id=" + id));
 
         return new PostsResponseDto(entity);
     }
 
-    @Transactional
-    public void delete (Long id) {
-        Posts posts = postsRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("ÇØ´ç »ç¿ëÀÚ°¡ ¾ø½À´Ï´Ù. id=" + id));
-
-        postsRepository.delete(posts);
-    }
-    
     @Transactional(readOnly = true)
     public List<PostsListResponseDto> findAllDesc() {
         return postsRepository.findAllDesc().stream()
