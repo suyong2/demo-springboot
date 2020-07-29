@@ -1,7 +1,8 @@
 #!/bin/bash
 
 REPOSITORY=/home/ec2-user/app/step2
-PROJECT_NAME=freelec-springboot2-webservice
+PROJECT_NAME=demo-springboot
+PROJECT_SHORTNAME=demo
 
 echo "> Build 파일 복사"
 
@@ -9,7 +10,7 @@ cp $REPOSITORY/zip/*.jar $REPOSITORY/
 
 echo "> 현재 구동중인 애플리케이션 pid 확인"
 
-CURRENT_PID=$(pgrep -fl freelec-springboot2-webservice | grep jar | awk '{print $1}')
+CURRENT_PID=$(pgrep -fl ${PROJECT_SHORTNAME} | grep jar | awk '{print $1}')
 
 echo "현재 구동중인 어플리케이션 pid: $CURRENT_PID"
 
@@ -40,4 +41,4 @@ nohup java -jar \
             /home/ec2-user/app/application-oauth.properties, \
             /home/ec2-user/app/application-real-db.properties \
         -Dspring.profiles.active=real \
-        $JAR_NAME > /dev/null 2>&1 &
+        $JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
